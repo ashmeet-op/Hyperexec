@@ -3,29 +3,34 @@ plugins {
 }
 
 android {
-    namespace 'git.artdeell.mojoexec'
+    namespace 'git.artdeell.mojoexec.native'
     compileSdk 37
 
     defaultConfig {
         minSdk 21
-        consumerProguardFiles "consumer-rules.pro"
+        targetSdk 37
+
+        externalNativeBuild {
+            cmake {
+                cppFlags ""
+            }
+        }
     }
 
     buildTypes {
-        debug {
-            initWith release
-        }
-
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+
+    externalNativeBuild {
+        cmake {
+            path file('../CMakeLists.txt')
+        }
     }
 }
 
 dependencies {
+    implementation project(':mojoexec:jni_bindings')
 }

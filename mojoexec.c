@@ -67,3 +67,23 @@ void* mojoexec_acq_egl_handle() {
     else return dlopen(native_egl_path, flags);
 }
 
+void* mojoexec_acq_gl_handle() {
+    int flags = RTLD_LOCAL | RTLD_NOW;
+    if(native_egl_path != NULL) {
+        if(egl_use_bypass) return linker_ns_dlopen(native_egl_path, flags);
+        else return dlopen(native_egl_path, flags);
+    }
+    if(egl_use_bypass) return linker_ns_dlopen("libGL.so", flags);
+    else return dlopen("libGL.so", flags);
+}
+
+void* mojoexec_acq_gles_handle() {
+    int flags = RTLD_LOCAL | RTLD_NOW;
+    if(native_egl_path != NULL) {
+        if(egl_use_bypass) return linker_ns_dlopen(native_egl_path, flags);
+        else return dlopen(native_egl_path, flags);
+    }
+    if(egl_use_bypass) return linker_ns_dlopen("libGLESv2.so", flags);
+    else return dlopen("libGLESv2.so", flags);
+}
+
