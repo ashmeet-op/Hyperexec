@@ -3,8 +3,12 @@ plugins {
 }
 
 android {
-    namespace 'git.artdeell.mojoexec.native'
-    compileSdk 37
+    namespace 'git.artdeell.mojoexec.nativeapi'
+    compileSdk {
+        version = release(37) {
+            it.minorApiLevel = 1
+        }
+    }
 
     defaultConfig {
         minSdk 21
