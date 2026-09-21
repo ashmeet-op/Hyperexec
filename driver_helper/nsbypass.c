@@ -43,10 +43,10 @@ bool linker_ns_load(const char* lib_search_path) {
     char full_path[strlen(SEARCH_PATH) + strlen(lib_search_path) + 2 + 1];
     sprintf(full_path, "%s:%s", SEARCH_PATH, lib_search_path);
     driver_namespace = ldfuncs.create_namespace("pojav-driver",
-                                                      full_path,
-                                                      full_path,
-                                                      3 /* TYPE_SHAFED | TYPE_ISOLATED */,
-                                                      "/system/:/system_ext/:/data/:/vendor/:/apex/", NULL);
+                                                full_path,
+                                                full_path,
+                                                3 /* TYPE_SHAFED | TYPE_ISOLATED */,
+                                                "/system/:/system_ext/:/data/:/vendor/:/apex/", NULL);
     // THIS IS VERY IMPORTANT and how I trolled FoldCraft:
     // You need to link the new driver_namespace with NULL and and add ld-android.so
     // in the link list, to pass through the driver_namespace correctly.
@@ -62,7 +62,7 @@ bool linker_ns_load(const char* lib_search_path) {
     // to itself and causes a deadlock when loading the vulkan driver.
     ldfuncs.link_namespaces(driver_namespace, NULL, "libnativeloader.so");
     ldfuncs.link_namespaces(driver_namespace, NULL, "libnativeloader_lazy.so");
-    ldfuncs.close(ldfuncs.dl_handle);
+    if(ldfuncs.dl_handle && ldfuncs.close) ldfuncs.close(ldfuncs.dl_handle);
     return true;
 }
 
