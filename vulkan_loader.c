@@ -15,7 +15,7 @@
 static bool turnip_enabled = false;
 
 #ifdef ENABLE_TURNIP_LOADER
-bool load_turnip_vulkan() {
+static bool load_turnip_vulkan(void) {
     static bool driver_loaded = false;
     if(driver_loaded) return true;
 
@@ -51,7 +51,8 @@ bool load_turnip_vulkan() {
 }
 #endif
 
-void* mojoexec_acq_vulkan_handle() {
+void* mojoexec_acq_vulkan_handle(void) {
+    mojoexec_make_bigcore_affine();
     int flags = RTLD_LOCAL | RTLD_NOW;
 #ifdef ENABLE_TURNIP_LOADER
     if(android_get_device_api_level() >= 28) { // the loader does not support below that

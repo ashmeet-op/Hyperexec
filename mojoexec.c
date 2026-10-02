@@ -61,13 +61,15 @@ Java_git_artdeell_mojoexec_MojoExec_setDisplayParams(JNIEnv *env, jclass clazz, 
     mojoexec_renderspec.disp_hz = hz;
 }
 
-void* mojoexec_acq_egl_handle() {
+void* mojoexec_acq_egl_handle(void) {
+    mojoexec_make_bigcore_affine();
     int flags = RTLD_LOCAL | RTLD_NOW;
     if(egl_use_bypass) return linker_ns_dlopen(native_egl_path, flags);
     else return dlopen(native_egl_path, flags);
 }
 
-void* mojoexec_acq_gl_handle() {
+void* mojoexec_acq_gl_handle(void) {
+    mojoexec_make_bigcore_affine();
     int flags = RTLD_LOCAL | RTLD_NOW;
     if(native_egl_path != NULL) {
         if(egl_use_bypass) return linker_ns_dlopen(native_egl_path, flags);
@@ -77,7 +79,8 @@ void* mojoexec_acq_gl_handle() {
     else return dlopen("libGL.so", flags);
 }
 
-void* mojoexec_acq_gles_handle() {
+void* mojoexec_acq_gles_handle(void) {
+    mojoexec_make_bigcore_affine();
     int flags = RTLD_LOCAL | RTLD_NOW;
     if(native_egl_path != NULL) {
         if(egl_use_bypass) return linker_ns_dlopen(native_egl_path, flags);

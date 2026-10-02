@@ -5,12 +5,15 @@ project(mojoexec DESCRIPTION "Android porting utility library")
 add_library(mojoexec SHARED
         vulkan_loader.c
         mojoexec.c
+        affinity.c
         driver_helper/nsbypass.c
         driver_helper/fake_dlfcn.c
         driver_helper/func_locator.c)
 
 target_include_directories(mojoexec PRIVATE ".")
 target_include_directories(mojoexec PUBLIC include)
+
+target_compile_definitions(mojoexec PRIVATE _GNU_SOURCE)
 
 target_link_libraries(mojoexec PRIVATE log)
 
